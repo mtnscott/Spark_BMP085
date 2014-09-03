@@ -21,6 +21,7 @@
 
 #include <application.h>
 #include <math.h>
+#include "BMP085.h"
 
 spark_BMP::spark_BMP() {
 }
