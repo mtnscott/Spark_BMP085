@@ -116,7 +116,6 @@ uint32_t spark_BMP::readRawPressure(void) {
 	return raw;
 }
 
-#if 0
 bool spark_BMP::refresh(uint32_t currTime) {
 	int32_t UT, UP, B3, B5, B6, X1, X2, X3, p;
 	uint32_t B4, B7;
@@ -164,9 +163,9 @@ bool spark_BMP::refresh(uint32_t currTime) {
 
 	return true;
 }
-#endif
-// Lets try and calculate a different way
 
+#if 0
+// Lets try and calculate a different way
 bool spark_BMP::refresh(uint32_t currTime) {
 	int32_t UT, UP, B3, B5, B6, X1, X2, X3, p;
 	uint32_t B4, B7;
@@ -205,6 +204,7 @@ bool spark_BMP::refresh(uint32_t currTime) {
 
 	return true;
 }
+#endif
 
 /************************* i2c wire read and write functions ******************************/
 
