@@ -116,6 +116,7 @@ uint32_t spark_BMP::readRawPressure(void) {
 	return raw;
 }
 
+#if 0
 bool spark_BMP::refresh(uint32_t currTime) {
 	int32_t UT, UP, B3, B5, B6, X1, X2, X3, p;
 	uint32_t B4, B7;
@@ -160,6 +161,47 @@ bool spark_BMP::refresh(uint32_t currTime) {
 
 	_temperature = temp;
 	_pressure = p;
+
+	return true;
+}
+#endif
+// Lets try and calculate a different way
+
+bool spark_BMP::refresh(uint32_t currTime) {
+	int32_t UT, UP, B3, B5, B6, X1, X2, X3, p;
+	uint32_t B4, B7;
+	float temp;
+
+	_sampletime = currTime;		/* set the current sample time */
+	UT = readRawTemperature();
+	UP = readRawPressure();
+
+	// do temperature calculations
+	X1 = ((long) UT - ac6) * ac5 >> 15;
+	X2 = ((long) mc << 11) / (X1 + md);
+	B5 = X1 + X2;
+	_temperature = (B5 + 8) >> 4;
+
+	// do pressure calcs
+	B6 = B5 - 4000;
+	X1 = (b2 * (B6 * B6 >> 12 )) >> 11;
+	X2 = ac2 * B6 >> 11;
+	X3 = X1 + X2;
+	B3 = (((int32_t) ac1 * 4 + X3) << _oversampling + 2) >> 2;
+
+	X1 = ac3 * B6 >> 13;
+	X2 = (b1 * (B6 * B6 >> 12)) >> 16;
+	X3 = ((X1 + X2) + 2) >> 2;
+	B4 = (ac4 * (uint32_t) (X3 + 32768)) >> 15;
+	B7 = ((uint32_t)UP - B3) * ( 50000UL >> _oversampling );
+
+	p = B7 < 0x80000000 ? (B7 * 2) / B4 : (B7 / B4) * 2;
+
+	X1 = (p >> 8) * (p >> 8);
+	X1 = (X1 * 3038) >> 16;
+	X2 = (-7357 * p) >> 16;
+
+	_pressure = p + ((X1 + X2 + 3791) >> 4);
 
 	return true;
 }

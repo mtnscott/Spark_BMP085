@@ -87,7 +87,7 @@ float spark_BMP::Altitude(float sealevelPressure) {
 	if (_sampletime + BMP085_SAMPLETIME < currTime)
 		refresh(currTime);
 
-	altitude = 44330 * (1.0 - pow(_pressure /sealevelPressure,0.1903));
+	altitude = 44330 * (1.0 - pow(_pressure /sealevelPressure,0.190284));
 
 	return altitude;
 }
