@@ -6,17 +6,6 @@
  *      Author: scottpiette
  *      this app includes all functions to date :
  *
- *      >  reading barometric pressure & temp from the BMP085
- *      >  uptime function to keep track of the current running time
- *      >  reading temperature and humidity from the DHT11
- *      >  flashing an LED for a heart beat
- *
- *      Need to add
- *      >  creating, maintaining cloud variables
- *      >  using the Ultrasonic sensor to measure distances
- *      >  reading the CO sensor
- *      >  reading the PIR sensor to determine if people & motion are present
- *      >  reading the VGA camera to capture location of specific objects (ie - car location in garage)
  */
 
 #include <application.h>
@@ -42,17 +31,19 @@ bool spark_BMP::init(uint8_t mode) {
 	if (read8(0xD0) != 0x55)	return false;
 
 	/* Read calibration data from the device */
-	ac1 = read16(0xAA);
-	ac2 = read16(0xAC);
-	ac3 = read16(0xAE);
-	ac4 = read16(0xB0);
-	ac5 = read16(0xB2);
-	ac6 = read16(0xB4);
-	b1 = read16(0xB6);
-	b2 = read16(0xB8);
-	mb = read16(0xBA);
-	mc = read16(0xBC);
-	md = read16(0xBE);
+	ac1 = read16(BMP_CAL_AC1);
+	ac2 = read16(BMP_CAL_AC2);
+	ac3 = read16(BMP_CAL_AC3);
+	ac4 = read16(BMP_CAL_AC4);
+	ac5 = read16(BMP_CAL_AC5);
+	ac6 = read16(BMP_CAL_AC6);
+    
+	b1 = read16(BMP_CAL_B1);
+	b2 = read16(BMP_CAL_B2);
+    
+	mb = read16(BMP_CAL_MB);
+	mc = read16(BMP_CAL_MC);
+	md = read16(BMP_CAL_MD);
 
 	_sampletime = 0;
 
@@ -216,8 +207,8 @@ uint8_t spark_BMP::read8(uint8_t a) {
 	Wire.endTransmission(); // end transmission
 
 	Wire.requestFrom(BMP085_I2CADDR, 1);// send data n-bytes read
-	while (!Wire.available())
-		;
+//	while (!Wire.available())
+//		;
 	ret = Wire.read(); // receive DATA
 
 	return ret;
@@ -231,8 +222,8 @@ uint16_t spark_BMP::read16(uint8_t a) {
 	Wire.endTransmission(); // end transmission
 
 	Wire.requestFrom(BMP085_I2CADDR, 2);// send data n-bytes read
-	while (Wire.available()< 2)
-		;
+//	while (Wire.available()< 2)
+//		;
 	ret = Wire.read(); // receive DATA
 	ret <<= 8;
 	ret |= Wire.read(); // receive DATA
