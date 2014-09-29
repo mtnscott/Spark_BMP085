@@ -31,19 +31,19 @@ bool spark_BMP::init(uint8_t mode) {
 	if (read8(0xD0) != 0x55)	return false;
 
 	/* Read calibration data from the device */
-	ac1 = read16(BMP_CAL_AC1);
-	ac2 = read16(BMP_CAL_AC2);
-	ac3 = read16(BMP_CAL_AC3);
-	ac4 = read16(BMP_CAL_AC4);
-	ac5 = read16(BMP_CAL_AC5);
-	ac6 = read16(BMP_CAL_AC6);
+	ac1 = read16(BMP085_CAL_AC1);
+	ac2 = read16(BMP085_CAL_AC2);
+	ac3 = read16(BMP085_CAL_AC3);
+	ac4 = read16(BMP085_CAL_AC4);
+	ac5 = read16(BMP085_CAL_AC5);
+	ac6 = read16(BMP085_CAL_AC6);
     
-	b1 = read16(BMP_CAL_B1);
-	b2 = read16(BMP_CAL_B2);
+	b1 = read16(BMP085_CAL_B1);
+	b2 = read16(BMP085_CAL_B2);
     
-	mb = read16(BMP_CAL_MB);
-	mc = read16(BMP_CAL_MC);
-	md = read16(BMP_CAL_MD);
+	mb = read16(BMP085_CAL_MB);
+	mc = read16(BMP085_CAL_MC);
+	md = read16(BMP085_CAL_MD);
 
 	_sampletime = 0;
 
