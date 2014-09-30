@@ -9,7 +9,6 @@
  */
 
 #include <application.h>
-#include <spark_wiring_i2c.h>
 #include <math.h>
 #include "BMP085.h"
 
@@ -26,7 +25,7 @@ bool spark_BMP::init(uint8_t mode) {
 	 *  There are 22 bytes of calibration data
 	 *  Lets read them into the variables
 	 */
-	TwoWire.begin();
+	Wire.begin();
 
 	/*
      * Not sure what this is about, can't find any reference
@@ -206,13 +205,13 @@ bool spark_BMP::refresh(uint32_t currTime) {
 uint8_t spark_BMP::read8(uint8_t a) {
 	uint8_t ret;
 
-	TwoWire.beginTransmission(BMP085_I2CADDR); // start transmission to device
-	TwoWire.write(a); // sends register address to read from
-	TwoWire.endTransmission(); // end transmission
+	Wire.beginTransmission(BMP085_I2CADDR); // start transmission to device
+	Wire.write(a); // sends register address to read from
+	Wire.endTransmission(); // end transmission
 
-	TwoWire.requestFrom(BMP085_I2CADDR, 1);// send data n-bytes read
-	while (!TwoWire.available()) ; // Wait for data
-	ret = TwoWire.read(); // receive DATA
+	Wire.requestFrom(BMP085_I2CADDR, 1);// send data n-bytes read
+	while (!Wire.available()) ; // Wait for data
+	ret = Wire.read(); // receive DATA
 
 	return ret;
 }
@@ -220,23 +219,23 @@ uint8_t spark_BMP::read8(uint8_t a) {
 uint16_t spark_BMP::read16(uint8_t a) {
 	uint16_t ret;
 
-	TwoWire.beginTransmission(BMP085_I2CADDR); // start transmission to device
-	TwoWire.write(a); // sends register address to read from
-	TwoWire.endTransmission(); // end transmission
+	Wire.beginTransmission(BMP085_I2CADDR); // start transmission to device
+	Wire.write(a); // sends register address to read from
+	Wire.endTransmission(); // end transmission
 
-	TwoWire.requestFrom(BMP085_I2CADDR, 2);// send data n-bytes read
-	while (TwoWire.available() < 2) ; // wait for two bytes
-	ret = TwoWire.read(); // receive DATA
+	Wire.requestFrom(BMP085_I2CADDR, 2);// send data n-bytes read
+	while (Wire.available() < 2) ; // wait for two bytes
+	ret = Wire.read(); // receive DATA
 	ret <<= 8;
-	ret |= TwoWire.read(); // receive DATA
+	ret |= Wire.read(); // receive DATA
 
 	return ret;
 }
 
 void spark_BMP::write8(uint8_t a, uint8_t d) {
-	TwoWire.beginTransmission(BMP085_I2CADDR); // start transmission to device
-	TwoWire.write(a); // sends register address to read from
-	TwoWire.write(d);  // write data
-	TwoWire.endTransmission(); // end transmission
+	Wire.beginTransmission(BMP085_I2CADDR); // start transmission to device
+	Wire.write(a); // sends register address to read from
+	Wire.write(d);  // write data
+	Wire.endTransmission(); // end transmission
 
 }
