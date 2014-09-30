@@ -9,6 +9,7 @@
  */
 
 #include <application.h>
+#include <spark_wiring_i2c.h>
 #include <math.h>
 #include "BMP085.h"
 
