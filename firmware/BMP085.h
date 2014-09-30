@@ -11,9 +11,9 @@
 
 #include <application.h>
 
-/******************************** spark_bmp.h ************************************/
+/***************************** spark_bmp.h *********************************/
 
-#define BMP085_SAMPLETIME		 1500  // Set a sample refresh time to 1500ms
+#define BMP085_SAMPLETIME		 1500  // Set sample refresh to 1500ms
 
 #define BMP085_I2CADDR			 0x77
 

@@ -1,4 +1,4 @@
-/******************************** spark_BMP085.cpp ************************************/
+/*************************** spark_BMP085.cpp *******************************/
 /*
  * spark_BMP085.cpp
  *
@@ -27,7 +27,10 @@ bool spark_BMP::init(uint8_t mode) {
 	 */
 	Wire.begin();
 
-	/* Not sure what this is about, can't find any reference for this first read in the docs */
+	/*
+     * Not sure what this is about, can't find any reference
+     * for this first read in the docs
+     */
 	if (read8(0xD0) != 0x55)	return false;
 
 	/* Read calibration data from the device */
@@ -83,7 +86,7 @@ float spark_BMP::Altitude(float sealevelPressure) {
 	return altitude;
 }
 
-/********************************* private functions ****************************************/
+/**************************** private functions ***********************************/
 
 uint16_t spark_BMP::readRawTemperature(void) {
 	write8(BMP085_CONTROL, BMP085_READTEMPCMD);
@@ -197,7 +200,7 @@ bool spark_BMP::refresh(uint32_t currTime) {
 }
 #endif
 
-/************************* i2c wire read and write functions ******************************/
+/******************* i2c wire read and write functions ************************/
 
 uint8_t spark_BMP::read8(uint8_t a) {
 	uint8_t ret;
@@ -207,8 +210,7 @@ uint8_t spark_BMP::read8(uint8_t a) {
 	Wire.endTransmission(); // end transmission
 
 	Wire.requestFrom(BMP085_I2CADDR, 1);// send data n-bytes read
-//	while (!Wire.available())
-//		;
+	while (!Wire.available()) ; // Wait for data
 	ret = Wire.read(); // receive DATA
 
 	return ret;
@@ -222,8 +224,7 @@ uint16_t spark_BMP::read16(uint8_t a) {
 	Wire.endTransmission(); // end transmission
 
 	Wire.requestFrom(BMP085_I2CADDR, 2);// send data n-bytes read
-//	while (Wire.available()< 2)
-//		;
+	while (Wire.available() < 2) ; // wait for two bytes
 	ret = Wire.read(); // receive DATA
 	ret <<= 8;
 	ret |= Wire.read(); // receive DATA
